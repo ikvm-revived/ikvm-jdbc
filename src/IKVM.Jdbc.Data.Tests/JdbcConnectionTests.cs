@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using FluentAssertions;
 
-using java.lang;
 using java.sql;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,7 +16,9 @@ namespace IKVM.Jdbc.Data.Tests
         [TestMethod]
         public void Can_do_some_stuff()
         {
-            using var cnn = new JdbcConnection(new org.sqlite.JDBC().connect("jdbc:sqlite:sample.db", new java.util.Properties()));
+            var c = org.sqlite.JDBC.createConnection("jdbc:sqlite:sample.db", new java.util.Properties());
+            using var cnn = new JdbcConnection(c);
+            cnn.Open();
             using var cmd = cnn.CreateCommand();
             cmd.CommandText = "drop table if exists person";
             cmd.ExecuteNonQuery();
